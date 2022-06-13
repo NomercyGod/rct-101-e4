@@ -1,0 +1,345 @@
+// <!-- navbar
+
+// import React from "react";
+// import { useDispatch, useSelector } from "react-redux";
+// import { Link, useNavigate } from "react-router-dom";
+// import { logout } from "../../store/auth/auth.actions";
+
+// const Navbar = () => {
+//   const isAuthenticated = useSelector(
+//     (state) => state.auth.data.isAuthenticated
+//   );
+//   const dispatch = useDispatch();
+//   const cartItemsCount = useSelector((state) => state.cart.data.length);
+//   const navigate = useNavigate();
+//   const handleLoginClick = () => {
+//     // login screen
+//     if (isAuthenticated) {
+//       dispatch(logout());
+//       navigate("/login");
+//       // he wants to logout
+//     } else {
+//       // he wants to login
+//       navigate("/login");
+//     }
+//   };
+//   return (
+//     <div
+//       data-cy="navbar"
+//       style={{
+//         padding: "10px",
+//         display: "flex",
+//         gap: "20px",
+//         justifyContent: "space-between",
+//       }}
+//     >
+//       <div
+//         style={{
+//           display: "flex",
+//           gap: "20px",
+//         }}
+//       >
+//         <Link data-cy="navbar-home-link" to="/">
+//           Logo
+//         </Link>
+//       </div>
+//       <div
+//         style={{
+//           display: "flex",
+//           gap: "20px",
+//         }}
+//       >
+//         <div data-cy="navbar-cart-items-count">
+//           Cart: {cartItemsCount && `(${cartItemsCount})`}
+//         </div>
+//         <button data-cy="navbar-login-logout-button" onClick={handleLoginClick}>
+//           {isAuthenticated ? "Logout" : "Login"}
+//         </button>
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default Navbar;
+
+
+
+// // ################################################################################################
+
+//         products
+
+//         import React, { useEffect } from "react";
+
+// import { Product } from "./Product";
+// import { useDispatch, useSelector } from "react-redux";
+// import { getProducts } from "../../store/product/product.actions";
+
+// const Products = () => {
+//   const dispatch = useDispatch();
+//   const { loading, error, data } = useSelector((state) => state.product);
+
+//   useEffect(() => {
+//     dispatch(getProducts());
+//   }, [dispatch]);
+
+//   if (loading) return <div>Loading...</div>;
+//   else if (error) return <div>Error...</div>;
+//   return (
+//     <div>
+//       <h1>Products</h1>
+//       <br />
+//       <br />
+//       <br />
+//       <br />
+//       <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
+//         {data.map((product) => (
+//           <Product key={product.id} {...product} />
+//         ))}
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default Products;
+
+
+
+
+
+// // ###############################################################################
+
+
+// product
+
+
+// import React from "react";
+// import { useDispatch, useSelector } from "react-redux";
+
+// import {
+//   addItemToCart,
+//   removeItemFromCart,
+//   updateCartItem,
+// } from "../../../store/cart/cart.actions";
+
+// const Product = ({ id, name, description }) => {
+//   const dispatch = useDispatch();
+//   const cart = useSelector((state) => {
+//     console.log(state.cart.data);
+//     return (
+//       state.cart.data.find((item) => item.productId === id) || { count: 0 }
+//     );
+//   });
+
+//   const handleAdd = () => {
+//     dispatch(
+//       addItemToCart({
+//         productId: id,
+//         count: 1,
+//       })
+//     );
+//   };
+//   const handleUpdate = (newCount) => {
+//     if (newCount === 0) {
+//       dispatch(removeItemFromCart(cart.id));
+//     } else {
+//       dispatch(updateCartItem(cart.id, { count: newCount }));
+//     }
+//   };
+
+//   return (
+//     <div
+//       data-cy={`product-${id}`}
+//       style={{
+//         border: "1px solid black",
+//         borderRadius: "16px",
+//         padding: "20px",
+//         minWidth: "200px",
+//       }}
+//     >
+//       <h3 data-cy="product-name">{name}</h3>
+//       <h6 data-cy="product-description">{description}</h6>
+//       {cart.count === 0 ? (
+//         <button data-cy="product-add-item-to-cart-button" onClick={handleAdd}>
+//           Add To Cart
+//         </button>
+//       ) : (
+//         <div>
+//           <button
+//             data-cy="product-increment-cart-item-count-button"
+//             onClick={() => handleUpdate(cart.count + 1)}
+//           >
+//             +
+//           </button>
+//           <span data-cy="product-count">{cart.count}</span>
+//           <button
+//             data-cy="product-decrement-cart-item-count-button"
+//             onClick={() => handleUpdate(cart.count - 1)}
+//           >
+//             -
+//           </button>
+//           <button
+//             data-cy="product-remove-cart-item-button"
+//             onClick={() => handleUpdate(0)}
+//           >
+//             Remove from cart
+//           </button>
+//         </div>
+//       )}
+//     </div>
+//   );
+// };
+
+// export default Product;
+
+
+
+// // ######################################################################################
+
+// require
+
+// import React from "react";
+// import { useSelector } from "react-redux";
+// import { Navigate, useLocation } from "react-router-dom";
+
+// const RequiredAuth = ({ children }) => {
+//   const { isAuthenticated } = useSelector((state) => state.auth.data);
+//   const location = useLocation();
+
+//   if (isAuthenticated) return children;
+//   return <Navigate to="/login" state={{ from: location }} repalce />;
+// };
+
+// export default RequiredAuth;
+
+
+// // ########################################################################################
+
+// home
+
+
+// import React from "react";
+// import { Products } from "../components/Products";
+
+// const Home = () => {
+//   return (
+//     <div
+//       style={{
+//         maxWidth: "1080px",
+//         margin: "auto",
+//       }}
+//     >
+//       <Products />
+//     </div>
+//   );
+// };
+
+// export default Home;
+
+
+// // ########################################################################################
+
+
+// login
+
+
+// import React, { useState } from "react";
+// import { useSelector, useDispatch } from "react-redux";
+// import { login } from "../store/auth/auth.actions";
+
+// const Login = () => {
+//   const [loginCreds, setLoginCreds] = useState({
+//     email: "eve.holt@reqres.in",
+//     password: "cityslicka",
+//   });
+//   const dispatch = useDispatch();
+//   const { loading, error } = useSelector((state) => state.auth);
+
+//   const hanldeChange = (e) => {
+//     const { name, value } = e.target;
+//     setLoginCreds({
+//       ...loginCreds,
+//       [name]: value,
+//     });
+//   };
+
+//   const handleSubmit = (e) => {
+//     e.preventDefault();
+//     if (loginCreds.email && loginCreds.password) {
+//       dispatch(login(loginCreds));
+//     }
+//   };
+
+//   if (loading) return <div>Loading...</div>;
+//   else if (error) return <div>Error...</div>;
+//   return (
+//     <div>
+//       Login
+//       <form
+//         onSubmit={handleSubmit}
+//         style={{
+//           display: "flex",
+//           flexDirection: "column",
+//           margin: "auto",
+//           maxWidth: "200px",
+//           gap: "10px",
+//         }}
+//       >
+//         <input
+//           data-cy="login-email"
+//           name="email"
+//           type="email"
+//           placeholder="Enter Email"
+//           value={loginCreds.email}
+//           onChange={hanldeChange}
+//         />
+//         <input
+//           data-cy="login-password"
+//           name="password"
+//           type="password"
+//           placeholder="Enter Password..."
+//           value={loginCreds.password}
+//           onChange={hanldeChange}
+//         />
+//         <button data-cy="login-submit" type="submit">
+//           Login
+//         </button>
+//       </form>
+//     </div>
+//   );
+// };
+
+// export default Login;
+
+// // ###################################################################################
+// store 
+
+// authstore
+
+
+
+// import axios from "axios";
+// import {
+//   AUTH_SIGN_IN_ERROR,
+//   AUTH_SIGN_IN_LOADING,
+//   AUTH_SIGN_IN_SUCCESS,
+//   AUTH_SIGN_OUT,
+// } from "./auth.types";
+
+// export const login = (params) => (disptach) => {
+//   disptach({ type: AUTH_SIGN_IN_LOADING });
+
+//   axios
+//     .post("https://reqres.in/api/login", {
+//       email: params.email,
+//       password: params.password,
+//     })
+//     .then((res) => {
+//       return disptach({ type: AUTH_SIGN_IN_SUCCESS, payload: res.data });
+//     })
+//     .catch(() => disptach({ type: AUTH_SIGN_IN_ERROR }));
+// };
+
+// export const logout = () => ({ type: AUTH_SIGN_OUT });
+
+
+//  -->
